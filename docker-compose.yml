@@ -1,0 +1,32 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13
+    hostname: postgres
+    environment:
+      - IS_DOCKER_COMPOSE=true
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+  postgres-cli:
+    image: postgres:13
+    build:
+      context: .
+      dockerfile: Dockerfile-psql
+    environment:
+      - IS_DOCKER_COMPOSE=true
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+    depends_on:
+      - postgres
+    volumes:
+      - .:/code
+    entrypoint:
+      - /bin/bash
+      - -c
+      - 'cd /code/scripts/db; /bin/bash migrate-up.sh'

@@ -1,0 +1,9 @@
+(include_subdirs unqualified)
+
+(executable
+ (name scaffold)
+ (libraries dream caqti-driver-postgresql)
+ (preprocess
+  (pps lwt_ppx)))
+
+(data_only_dirs _esy esy.lock lib node_modules)
